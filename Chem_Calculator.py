@@ -1,36 +1,47 @@
 #starting off with a PV=nRT calculator then moving on to add more chem calculators
 import math
 import sys
+
+class ChemCalculator:
+    def __init__(self):
+        self.calculators = {
+            "Ideal Gas Law": self.ideal_gas_law,
+            "Pressure Conversion": self.ideal_gas_law,  # Placeholder for pressure conversion
+            # Add more calculators here as methods
+        }
+
+    def run(self):
+        print("Welcome to the Chemistry Calculator!")
+        print("Available calculators:")
+        for name in self.calculators.keys():
+            print(f"- {name}")
         
-#TempF = float(input("What is the temp in fahrenheit: "))
-#TempC = ((TempF - 32)*5)/9
-#print(TempC)
+        choice = input("Select a calculator: ")
+        if choice in self.calculators:
+            self.calculators[choice]()
+        else:
+            print("Invalid choice. Exiting.")
+            sys.exit(1)
 
-
-print("\n--- Ideal Gas Law Calculator ---")
-print("Formula: PV = nRT")
-print("R = 0.08206 L·atm/(mol·K)")
-print("Leave one field empty to solve for it.")
-
-pressure_input = input("What is the Pressure(atm): ")
-pressure = float(pressure_input) if pressure_input else None
-volume_input = input("What is the Volume(L): ")
-volume = float(volume_input) if volume_input else None
-moles_input = input("What is the Moles(mol): ")
-moles = float(moles_input) if moles_input else None
-temp_input = input("What is the Temp(K): ")
-temp = float(temp_input) if temp_input else None
-R = .0821
-
-if pressure is None:
-    pressure = (moles * R * temp) / volume
-    print(f"Result: {pressure:.4f} atm")
-elif volume is None:
-    volume = (moles * R * temp) / pressure
-    print(f"Result: {volume:.4f} L")
-elif moles is None:
-    moles = (pressure * volume) / (R * temp)
-    print(f"Result: {moles:.4f} mol")
-elif temp is None:
-    temp = (pressure * volume) / (moles * R)
-    print(f"Result: {temp:.4f} K")
+    def ideal_gas_law(self):
+        print("Ideal Gas Law Calculator (PV = nRT)")
+        try:
+            P = float(input("Enter pressure (P) in atm: "))
+            V = float(input("Enter volume (V) in liters: "))
+            n = float(input("Enter number of moles (n): "))
+            R = 0.0821  # Ideal gas constant in L·atm/(K·mol)
+            T = float(input("Enter temperature (T) in Kelvin: "))
+            result = P * V / (n * R * T)
+            print(f"The result of PV/nRT is: {result}")
+        except ValueError:
+            print("Invalid input. Please enter numeric values.")
+    
+    def pressure_conversion(self):
+        print("Pressure Conversion Calculator")
+        try:
+            pressure = float(input("Enter pressure in atm: "))
+            conversion_factor = 101.325  # atm to kPa
+            converted_pressure = pressure * conversion_factor
+            print(f"Pressure in kPa: {converted_pressure}")
+        except ValueError:
+            print("Invalid input. Please enter a numeric value.")
